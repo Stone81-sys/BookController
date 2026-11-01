@@ -8,5 +8,6 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
 mybatis:
   log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath:mapper/**Mapper.xml
   configuration: #配置打印MyBatis日志
     map-underscore-to-camel-case: true #配置驼峰自动转换

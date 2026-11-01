@@ -42,17 +42,38 @@ public class BookController {
             log.error("添加失败",e);
             return e.getMessage();
         }
-
-
     }
 
     @RequestMapping("/getList")
     public PageResult<BookInfo> getList(PageRequest pageRequest){
 
         PageResult<BookInfo> pageResult=
-        bookService.BookCurrentList(pageRequest);
+        bookService.bookCurrentList(pageRequest);
 
         return pageResult;
+    }
+
+    @RequestMapping("/updateBook")
+    public String UpdateBook(BookInfo bookInfo){
+
+        try {
+            if (bookService.updateBookInfo(bookInfo) > 0) {
+                return "";
+            }
+        }catch (Exception e){
+            e.getMessage();
+        }
+        return "更新失败";
+    }
+
+    @RequestMapping("/queryBookById")
+    public BookInfo queryBookById(Integer bookId){
+
+        if(bookId==null||bookId<=0){
+            return new BookInfo();
+        }
+        return  bookService.selectSomeBook(bookId);
+
     }
 
 }

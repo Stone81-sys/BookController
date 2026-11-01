@@ -2,12 +2,10 @@ package com.example.demo.Mapper;
 
 import com.example.demo.model.BookInfo;
 import com.example.demo.model.PageRequest;
-import com.example.demo.model.UserInfo;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
-import java.awt.print.Book;
 import java.util.List;
 
 @Mapper
@@ -39,7 +37,7 @@ public interface BookInfoMapper {
             from book_info
 
             """)
-    List<BookInfo> selectBook();
+    List<BookInfo> selectAllBook();
 
     @Select("""
             select count(1) from book_info
@@ -51,5 +49,13 @@ public interface BookInfoMapper {
             from book_info limit #{offset} , #{pageSize}
             """)
     List<BookInfo> selectCurrentBook(PageRequest pageRequest);
+
+    int updateBookInfo(BookInfo bookInfo);
+
+    @Select("""
+            select `id`,`book_name`,`author`,`count`,`price`,`publish`,`status` 
+            from book_info where id=#{id}
+            """)
+    public BookInfo selectSomeBook(int id);
 
 }

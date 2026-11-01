@@ -24,17 +24,15 @@ public class BookService {
 
     public List<BookInfo> checkAllBook(){
 
-        return bookInfoMapper.selectBook();
+        return bookInfoMapper.selectAllBook();
     }
 
-    public PageResult<BookInfo> BookCurrentList(PageRequest pageRequest){
+    public PageResult<BookInfo> bookCurrentList(PageRequest pageRequest){
 
         int bookTotal=bookInfoMapper.selectTotal();
 
-
-
         List<BookInfo> bookListCurrent=bookInfoMapper.selectCurrentBook(pageRequest);
-
+        //TODO 这里面用枚举 , 也很不错 , 尝试一下
         for(BookInfo bookInfo:bookListCurrent) {
 
             if (bookInfo.getStatus() == 1) {
@@ -50,7 +48,14 @@ public class BookService {
         }
         return new PageResult(bookListCurrent,bookTotal,pageRequest);
 
+    }
 
+    public int updateBookInfo(BookInfo bookInfo){
 
+        return bookInfoMapper.updateBookInfo(bookInfo);
+    }
+
+    public BookInfo selectSomeBook(int id){
+        return bookInfoMapper.selectSomeBook(id);
     }
 }
