@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: demo
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/book_test?characterEncoding=utf8&useSSL=false
+    username: root
+    password: wh815815
+    driver-class-name: com.mysql.cj.jdbc.Driver
+mybatis:
+  log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  configuration: #配置打印MyBatis日志
+    map-underscore-to-camel-case: true #配置驼峰自动转换

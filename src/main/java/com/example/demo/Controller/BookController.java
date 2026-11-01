@@ -2,19 +2,57 @@ package com.example.demo.Controller;
 
 import com.example.demo.model.BookInfo;
 import com.example.demo.Service.BookService;
+import com.example.demo.model.PageRequest;
+import com.example.demo.model.PageResult;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
-@RestController
+@Slf4j
+@ResponseBody
+@Controller
 @RequestMapping("/book")
 public class BookController {
-    @RequestMapping("/getList")
-    public List<BookInfo> booklist(){
-        BookService bookService = new BookService();
-        List<BookInfo> booklist=bookService.getBookList();
-        return booklist;
+    @Autowired
+    BookService bookService;
+
+
+    @RequestMapping("/addBook")
+    public String addBook(BookInfo bookInfo){
+        if(!StringUtils.hasLength(bookInfo.getBookName())
+                ||!StringUtils.hasLength(bookInfo.getAuthor())
+                ||!StringUtils.hasLength(bookInfo.getPublish())
+                ||bookInfo.getCount()==0
+                ||bookInfo.getPrice()==0
+                ||bookInfo.getStatus()==0
+
+        ){
+            return "输入不合规 , 请重新输入";
+        }
+        try{
+            bookService.addBook(bookInfo);
+            return "";
+
+        }catch (Exception e){
+            log.error("添加失败",e);
+            return e.getMessage();
+        }
+
 
     }
+
+    @RequestMapping("/getList")
+    public PageResult<BookInfo> getList(PageRequest pageRequest){
+
+        PageResult<BookInfo> pageResult=
+        bookService.BookCurrentList(pageRequest);
+
+        return pageResult;
+    }
+
 }

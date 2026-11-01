@@ -63,9 +63,34 @@
     </div>
     <script type="text/javascript" src="js/jquery.min.js"></script>
     <script>
+        
         function add() {
-            alert("添加成功");
-            location.href = "book_list.html";
+            var bookStock = $("#bookStock").val();
+            var bookPrice = $("#bookPrice").val();
+            if (!/^\d+(\.\d+)?$/.test(bookStock) || !/^\d+(\.\d+)?$/.test(bookPrice)) {
+                alert("库存或定价应为数字");
+                return;
+            }
+            $.ajax({
+                type:"post",
+                url:"/book/addBook",
+                data:$("#addBook").serialize(),
+                success:function (result) {
+                    if(result=="") {
+                        alert("添加成功");
+                        location.href = "book_list.html";
+                    }else{
+                        alert("输入不合规 , 请重新输入")
+                    }
+
+                },
+                error:function (error){
+                    console.log(error);
+                }
+
+
+            })
+
         }
     </script>
 </body>
