@@ -136,6 +136,25 @@
                 }
             }
 
+            function deleteBook(id) {
+                var isDelete = confirm("确认删除?");
+                if (isDelete) {
+                    //删除图书
+                    $.ajax({
+                        type: "post",
+                        url:"/book/updateBook",
+                        data:{
+                            id: id,
+                            status: 0
+                        },
+                        //重新刷新页面
+                        success: function(){
+                        location.href = "book_list.html"
+                        }
+                    })
+                }
+            }
+
         </script>
     </div>
 </body>
