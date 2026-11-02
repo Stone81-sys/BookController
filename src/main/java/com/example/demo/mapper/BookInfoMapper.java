@@ -1,4 +1,4 @@
-package com.example.demo.Mapper;
+package com.example.demo.mapper;
 
 import com.example.demo.model.BookInfo;
 import com.example.demo.model.PageRequest;
@@ -34,7 +34,7 @@ public interface BookInfoMapper {
 
     @Select("""
             select `id`,`book_name`,`author`,`count`,`price`,`publish`,`status` 
-            from book_info
+            from book_info where status!=0
 
             """)
     List<BookInfo> selectAllBook();
@@ -46,16 +46,19 @@ public interface BookInfoMapper {
 
     @Select("""
             select `id`,`book_name`,`author`,`count`,`price`,`publish`,`status`
-            from book_info limit #{offset} , #{pageSize}
+            from book_info where status!=0 limit #{offset} , #{pageSize} 
             """)
     List<BookInfo> selectCurrentBook(PageRequest pageRequest);
-
-    int updateBookInfo(BookInfo bookInfo);
 
     @Select("""
             select `id`,`book_name`,`author`,`count`,`price`,`publish`,`status` 
             from book_info where id=#{id}
             """)
     public BookInfo selectSomeBook(int id);
+
+    int updateBookInfo(BookInfo bookInfo);
+
+    int updateBookById(List<Integer> ids);
+
 
 }

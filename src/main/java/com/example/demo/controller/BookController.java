@@ -1,14 +1,15 @@
-package com.example.demo.Controller;
+package com.example.demo.controller;
 
-import com.example.demo.model.BookInfo;
-import com.example.demo.Service.BookService;
-import com.example.demo.model.PageRequest;
-import com.example.demo.model.PageResult;
+import com.example.demo.constants.Constants;
+import com.example.demo.model.*;
+import com.example.demo.service.BookService;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -45,17 +46,27 @@ public class BookController {
     }
 
     @RequestMapping("/getList")
-    public PageResult<BookInfo> getList(PageRequest pageRequest){
+    public Result<PageResult> getList(PageRequest pageRequest, HttpSession session){
 
-        PageResult<BookInfo> pageResult=
-        bookService.bookCurrentList(pageRequest);
+        if(session.getAttribute(Constants.USER_KEY)==null){
+            return Result.unlogin();
+        }
 
-        return pageResult;
+        UserInfo userInfo=(UserInfo) session.getAttribute(Constants.USER_KEY);
+
+        if(userInfo==null){
+            return Result.unlogin();
+        }
+
+        PageResult<BookInfo> pageResult =
+                bookService.bookCurrentList(pageRequest);
+
+        return Result.success(pageResult);
     }
 
     @RequestMapping("/updateBook")
     public String UpdateBook(BookInfo bookInfo){
-
+        //TODO 什么都没改会怎么样
         try {
             if (bookService.updateBookInfo(bookInfo) > 0) {
                 return "";
@@ -73,7 +84,20 @@ public class BookController {
             return new BookInfo();
         }
         return  bookService.selectSomeBook(bookId);
+    }
+//RequestParam 一定要加原因 还有把它加到GitHub上面
+    @RequestMapping("/batchDeleteBook")
+    public Boolean batchDeleteBook(@RequestParam List<Integer> ids){
+        try {
+            bookService.batchDeleteBook(ids);
+        }catch (Exception e){
+            e.getMessage();
+            return false;
+        }
+        return true;
 
     }
+
+
 
 }

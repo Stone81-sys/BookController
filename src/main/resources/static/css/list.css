@@ -28,14 +28,14 @@
     margin-top: 30px;
 }
 .page-link {
-    color: #f4e003;
+    color: #a6587f;
     /* border-color: #17a2b8; */
 }
 .page-item.active .page-link {
     z-index: 3;
     color: #fff;
-    background-color: #f4e003;
-    border-color: #f4e003;
+    background-color: #a6587f;
+    border-color: #a6587f;
 }
 table{
     width: 100%;
@@ -50,13 +50,13 @@ table caption{
 }
 
 th,td{
-    border: 1px solid #999;
+    border: 1px solid #a6587f;
     text-align: center;
     padding: 20px 0;
 }
  
 table thead tr{
-    background-color: #17a2b8;
+    background-color: #a6587f;
     color: #fff;
 }
 

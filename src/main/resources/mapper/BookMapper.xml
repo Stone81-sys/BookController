@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.demo.Mapper.BookInfoMapper">
+<mapper namespace="com.example.demo.mapper.BookInfoMapper">
 <!--    //        `book_name` VARCHAR ( 127 ) NOT NULL,-->
 <!--    //        `author` VARCHAR ( 127 ) NOT NULL,-->
 <!--    //        `count` INT ( 11 ) NOT NULL,-->
@@ -49,5 +49,12 @@
 
         </set>
         where id=#{id}
+    </update>
+    <update id="updateBookById">
+        update book_info set status=0
+        where id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
     </update>
 </mapper>

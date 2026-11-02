@@ -1,6 +1,7 @@
-package com.example.demo.Service;
+package com.example.demo.service;
 
-import com.example.demo.Mapper.BookInfoMapper;
+import com.example.demo.enums.BookStatus;
+import com.example.demo.mapper.BookInfoMapper;
 import com.example.demo.model.BookInfo;
 import com.example.demo.model.PageRequest;
 import com.example.demo.model.PageResult;
@@ -32,22 +33,13 @@ public class BookService {
         int bookTotal=bookInfoMapper.selectTotal();
 
         List<BookInfo> bookListCurrent=bookInfoMapper.selectCurrentBook(pageRequest);
-        //TODO 这里面用枚举 , 也很不错 , 尝试一下
+
         for(BookInfo bookInfo:bookListCurrent) {
 
-            if (bookInfo.getStatus() == 1) {
-                bookInfo.setStatusCN("可借阅");
-            }
-            if (bookInfo.getStatus() == 2) {
-                bookInfo.setStatusCN("不可借阅");
-            }
-
-            if (bookInfo.getStatus() == 0) {
-                bookInfo.setStatusCN("无效");
-            }
+            bookInfo.setStatusCN(BookStatus.getName(bookInfo.getStatus()));
         }
-        return new PageResult(bookListCurrent,bookTotal,pageRequest);
 
+        return new PageResult(bookListCurrent,bookTotal,pageRequest);
     }
 
     public int updateBookInfo(BookInfo bookInfo){
@@ -57,5 +49,13 @@ public class BookService {
 
     public BookInfo selectSomeBook(int id){
         return bookInfoMapper.selectSomeBook(id);
+    }
+
+    public int batchDeleteBook(List<Integer> ids) {
+
+        int affectLine=0;
+        affectLine+=bookInfoMapper.updateBookById(ids);
+
+        return affectLine;
     }
 }

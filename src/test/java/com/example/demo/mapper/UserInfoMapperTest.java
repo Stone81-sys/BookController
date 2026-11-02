@@ -1,6 +1,6 @@
-package com.example.demo.Mapper;
+package com.example.demo.mapper;
 
-import com.example.demo.Service.UserService;
+import com.example.demo.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

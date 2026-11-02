@@ -56,9 +56,9 @@
                     type:"get",
                     success:function(result){
                         console.log(result);
-                        if(result!=null){
+                        if(result.data!=null){
                             var sentence='';
-                            for(var book of result.records){
+                            for(var book of result.data.records){
                                 sentence+='<tr>';
                                     sentence+= '<td><input type="checkbox" name="selectBook" value="' + book.id + '" id="selectBook" class="book-select"></td>';
                                     sentence+='<td>'+book.id+'</td>';
@@ -80,10 +80,10 @@
 
                             //翻页信息
                             $("#pageContainer").jqPaginator({
-                                totalCounts: result.total, //总记录数
-                                pageSize: result.pageRequest.pageSize,    //每页的个数
+                                totalCounts: result.data.total, //总记录数
+                                pageSize: result.data.pageRequest.pageSize,    //每页的个数
                                 visiblePages: 9, //最多可视页数//
-                                currentPage: result.pageRequest.currentPage,  //当前页码
+                                currentPage: result.data.pageRequest.currentPage,  //当前页码
                                 first: '<li class="page-item"><a class="page-link">首页</a></li>',
                                 prev: '<li class="page-item"><a class="page-link" href="javascript:void(0);">上一页<\/a><\/li>',
                                 next: '<li class="page-item"><a class="page-link" href="javascript:void(0);">下一页<\/a><\/li>',
@@ -99,32 +99,40 @@
                                 }
                             });
 
+                        }else{
+                            alert(result.states);
+                            location.href = "login.html";
                         }
+                    },
+                    error:function() {
+                        alert("请求失败");
                     }
 
                 });
 
             }
-            
 
-
-            function deleteBook(id) {
-                var isDelete = confirm("确认删除?");
-                if (isDelete) {
-                    //删除图书
-                    alert("删除成功");
-                }
-            }
             function batchDelete() {
                 var isDelete = confirm("确认批量删除?");
                 if (isDelete) {
                     //获取复选框的id
                     var ids = [];
-                    $("input:checkbox[name='selectBook']:checked").each(function () {
+                    $("input:checkbox[name='selectBook']:checked").each(function(){
                         ids.push($(this).val());
                     });
                     console.log(ids);
-                    alert("批量删除成功");
+                    //批量删除$.
+                    $.ajax({
+                        type: "post",
+                        url: "/book/batchDeleteBook?ids=" + ids,
+                        success: function (result) {
+                            if (result) {
+                                alert("删除成功");
+                                //重新刷新页面
+                                location.href = "book_list.html"
+                            }
+                        }
+                    })
                 }
             }
 
