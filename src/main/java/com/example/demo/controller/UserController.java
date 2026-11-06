@@ -18,7 +18,6 @@ public class UserController{
     @Autowired
     UserService userService;
 
-
     @RequestMapping("/login")
     public boolean UserLogin(String name , String password, HttpSession session){
         if(!StringUtils.hasLength(name)&&!StringUtils.hasLength(password)){
